@@ -1,12 +1,10 @@
-const token = '1849886945:AAEEuSfsD55yh2yC1RbEuaTg1bXGh_-vR9Q';
-
 const botAPI = require('node-telegram-bot-api');
 const ffmpeg = require('ffmpeg-static');
 const YTDownloader = require('youtube-mp3-downloader');
 const fs = require('fs');
 
 const queue = {};
-const bot = new botAPI(token, {polling: true});
+const bot = new botAPI(process.env.TOKEN, {polling: true});
 const YD = new YTDownloader({
     "ffmpegPath": ffmpeg,
     "outputPath": "./audio",
