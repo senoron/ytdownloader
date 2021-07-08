@@ -1,0 +1,21 @@
+{
+  "name": "youtubebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": "14.17.1"
+  },
+  "author": "Senoron",
+  "license": "ISC",
+  "dependencies": {
+    "ffmpeg-static": "^4.4.0",
+    "node-telegram-bot-api": "^0.53.0",
+    "nodemon": "^2.0.10",
+    "youtube-mp3-downloader": "^0.7.7"
+  }
+}
