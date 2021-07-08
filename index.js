@@ -4,6 +4,8 @@ const YTDownloader = require('youtube-mp3-downloader');
 const fs = require('fs');
 
 const queue = {};
+const messages = {};
+
 const bot = new botAPI(process.env.TOKEN, {polling: true});
 const YD = new YTDownloader({
     "ffmpegPath": ffmpeg,
@@ -25,16 +27,20 @@ function getID(url){
 }
 
 bot.on('message', msg => {
+    console.log(msg);
     if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
         let videoID = getID(msg.text);
         queue[videoID] = msg.chat.id;
+        messages[videoID] = msg.message_id;
         YD.download(videoID);
     }
 });
 
 YD.on("finished", function(err, data) {
+    bot.deleteMessage(queue[data.videoId], messages[data.videoId]);
     bot.sendAudio(queue[data.videoId], data.file).then(() => {
         delete queue[data.videoId];
+        delete messages[data.videoId];
         fs.unlink(data.file, (err) => {
             if(err != null) console.log(err);
         });
