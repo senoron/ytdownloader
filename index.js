@@ -4,7 +4,6 @@ const YTDownloader = require('youtube-mp3-downloader');
 const fs = require('fs');
 
 const queue = {};
-const messages = {};
 
 const bot = new botAPI(process.env.TOKEN, {polling: true});
 const YD = new YTDownloader({
@@ -26,23 +25,40 @@ function getID(url){
     }
 }
 
+bot.on("polling_error", console.log);
+
 bot.on('message', msg => {
-    console.log(msg);
+    fs.appendFile("./logs.log", "\n[" + Date() + "] chatId: " + msg.chat.id + " usr: " + msg.from.username + " text: " + msg.text, err => {
+        if(err) throw err;
+    });
+
     if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
+        bot.deleteMessage(msg.chat.id, msg.message_id);
+        fs.appendFile("./logs.log", "\n[" + Date() + "] chatId: " + msg.chat.id +  " messageId: " + msg.message_id + " deleted", err => {
+            if(err) throw err;
+        });
         let videoID = getID(msg.text);
+        fs.appendFile("./logs.log", "\n[" + Date() + "] chatId: " + msg.chat.id + " videoID: " + videoID, err => {
+            if(err) throw err;
+        });
+
         queue[videoID] = msg.chat.id;
-        messages[videoID] = msg.message_id;
         YD.download(videoID);
     }
 });
 
 YD.on("finished", function(err, data) {
-    bot.deleteMessage(queue[data.videoId], messages[data.videoId]);
+
     bot.sendAudio(queue[data.videoId], data.file).then(() => {
+        fs.appendFile("./logs.log", "\n[" + Date() + "] chatId: " + queue[data.videoId] + " videoId: " + data.videoId + " sent", err => {
+            if(err) throw err;
+        });
+
         delete queue[data.videoId];
-        delete messages[data.videoId];
         fs.unlink(data.file, (err) => {
-            if(err != null) console.log(err);
+            if(err) fs.appendFile("./logs.log", "\n[" + Date() + "] videoId: " + data.videoId + " sent", err => {
+                if(err) throw err;
+            });;
         });
     });
 });
