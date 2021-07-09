@@ -6,7 +6,7 @@ const fs = require('fs');
 const queue = {};
 
 const bot = new botAPI(process.env.TOKEN, {polling: true});
-fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED", err => {
+fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN, err => {
     if(err) throw err;
 });
 
