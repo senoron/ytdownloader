@@ -5,7 +5,9 @@ const fs = require('fs');
 
 const queue = {};
 
-const bot = new botAPI(process.env.TOKEN, {polling: true});
+const port = process.env.PORT || 8443;
+const host = process.env.HOST;
+const bot = new botAPI(process.env.TOKEN, {polling: true, webHook: {port: port, host: host}});
 fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN, err => {
     if(err) throw err;
 });
