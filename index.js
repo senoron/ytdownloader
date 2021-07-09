@@ -15,6 +15,7 @@ bot.on("polling_error", err => {
 
 bot.on('message', msg => {
     log("\n[" + Date() + "] chatId: " + msg.chat.id + " usr: " + msg.from.username + " text: " + msg.text);
+
     if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
         bot.deleteMessage(msg.chat.id, msg.message_id).catch(rej => console.log(rej));
         log("\n[" + Date() + "] chatId: " + msg.chat.id +  " messageId: " + msg.message_id + " deleted");
@@ -24,6 +25,9 @@ bot.on('message', msg => {
 
         queue[videoID] = msg.chat.id;
         YD.download(videoID);
+    }
+    else if(msg.text === "/start"){
+        bot.sendMessage(msg.chat.id, "Send video link and wait a little to get your audio \u{1F47E}").catch(rej => console.log(rej));
     }
 });
 
