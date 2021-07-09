@@ -6,6 +6,10 @@ const fs = require('fs');
 const queue = {};
 
 const bot = new botAPI(process.env.TOKEN, {polling: true});
+fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED", err => {
+    if(err) throw err;
+});
+
 const YD = new YTDownloader({
     "ffmpegPath": ffmpeg,
     "outputPath": "./audio",
