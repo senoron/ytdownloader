@@ -19,11 +19,11 @@ bot.on('message', msg => {
 
     if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
         bot.sendMessage(msg.chat.id, "Process...").catch(rej => console.log(rej));
-        // bot.deleteMessage(msg.chat.id, msg.message_id).catch(rej => console.log(rej));
+        bot.deleteMessage(msg.chat.id, msg.message_id).catch(rej => console.log(rej));
         // log("\n[" + Date() + "] chatId: " + msg.chat.id +  " messageId: " + msg.message_id + " deleted");
 
         let videoID = getID(msg.text);
-        messages[videoID][msg.chat.id] = msg.message_id + 1;
+        messages[videoID] = msg.message_id + 1;
 
         log("\n[" + Date() + "] chatId: " + msg.chat.id + " videoID: " + videoID);
 
@@ -38,8 +38,8 @@ bot.on('message', msg => {
 YD.on("finished", function(err, data) {
     bot.sendAudio(queue[data.videoId], data.file).then(() => {
         log("\n[" + Date() + "] chatId: " + queue[data.videoId] + " videoId: " + data.videoId + " sent");
-        bot.deleteMessage(queue[data.videoId], messages[data.videoId][queue[data.videoId]]);
-        delete messages[data.videoId][queue[data.videoId]];
+        bot.deleteMessage(queue[data.videoId], messages[data.videoId]).catch(rej => console.log(rej));
+        delete messages[data.videoId];
         delete queue[data.videoId];
         fs.unlink(data.file, (err) => {if(err != null) console.log(err)});
     });
