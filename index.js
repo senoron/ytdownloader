@@ -5,9 +5,13 @@ const fs = require('fs');
 
 const queue = {};
 
-const port = process.env.PORT || 8443;
-const host = process.env.HOST;
-const bot = new botAPI(process.env.TOKEN, {webHook: {port: port, host: host}});
+const port = process.env.PORT || 443;
+const host = '0.0.0.0';
+const externalUrl = process.env.CUSTOM_ENV_VARIABLE || 'https://senoron-ytdownloader.herokuapp.com';
+const token = process.env.TOKEN;
+
+const bot = new botAPI(token, {webHook: {port: port, host: host}});
+bot.setWebHook(externalUrl + ':433/bot' + token);
 fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN, err => {
     if(err) throw err;
 });
