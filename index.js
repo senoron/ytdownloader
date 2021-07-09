@@ -11,7 +11,6 @@ const externalUrl = process.env.CUSTOM_ENV_VARIABLE || 'https://senoron-ytdownlo
 const token = process.env.TOKEN;
 
 const bot = new botAPI(token, {webHook: {port: port, host: host}});
-bot.setWebHook(externalUrl + ':433/bot' + token);
 fs.appendFile("./logs.log", "\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN, err => {
     if(err) throw err;
 });
