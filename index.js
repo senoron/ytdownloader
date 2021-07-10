@@ -8,7 +8,7 @@ const queue = {};
 const messages = {};
 
 const bot = new botAPI(process.env.TOKEN, {webHook: {port: process.env.PORT, host: '0.0.0.0'}});
-bot.setWebHook('https://senoron-ytdownloader.herokuapp.com:443/bot' + process.env.TOKEN);
+bot.setWebHook('https://senoron-ytdownloader.herokuapp.com:443/bot' + process.env.TOKEN).catch(err => console.log(err));
 
 log("\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN);
 
