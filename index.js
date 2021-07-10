@@ -7,7 +7,9 @@ const fs = require('fs');
 const queue = {};
 const messages = {};
 
-const bot = new botAPI('1836260559:AAHn-9qHV59TUQF6IkkVyBs2ouoNaC8akP8', {polling: true});
+const bot = new botAPI(process.env.TOKEN, {webHook: {port: process.env.PORT, host: '0.0.0.0'}});
+bot.setWebHook('https://senoron-ytdownloader.herokuapp.com:443/bot' + process.env.TOKEN);
+
 log("\n[" + Date() + "] Bot STARTED Token: " + process.env.TOKEN);
 
 bot.on("polling_error", err => {
@@ -18,7 +20,7 @@ bot.on('message', msg => {
     log("\n[" + Date() + "] chatId: " + msg.chat.id + " usr: " + msg.from.username + " text: " + msg.text);
 
     if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
-        bot.sendMessage(msg.chat.id, "Process...").catch(rej => console.log(rej));
+        //bot.sendMessage(msg.chat.id, "Process...").catch(rej => console.log(rej));
         bot.deleteMessage(msg.chat.id, msg.message_id).catch(rej => console.log(rej));
         // log("\n[" + Date() + "] chatId: " + msg.chat.id +  " messageId: " + msg.message_id + " deleted");
 
