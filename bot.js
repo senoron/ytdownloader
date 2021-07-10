@@ -24,7 +24,10 @@ bot.on("polling_error", err => {
 });
 
 bot.on('message', (msg) => {
-    if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
+    if(msg.text === '/start'){
+        bot.sendMessage(msg.chat.id, "\u{1F47E} Send the video link and wait a little to get your audio \u{1F47E}").catch(rej => console.log(rej));
+    }
+    else if(msg.text.includes("https://youtu.be") || msg.text.includes("https://www.youtube.com")){
         //bot.sendMessage(msg.chat.id, "Process...").catch(rej => console.log(rej));
         bot.deleteMessage(msg.chat.id, msg.message_id).catch(rej => console.log(rej));
 
